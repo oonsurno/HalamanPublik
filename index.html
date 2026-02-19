@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Profesional</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    color: white;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.65);
+    min-height: 100vh;
+    padding: 50px 30px;
+    text-align: center;
+}
+
+.header-box {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 60px;
+}
+
+.header-box h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.header-box h3 {
+    font-weight: 300;
+    opacity: 0.9;
+    font-size: 20px;
+}
+
+/* === GALLERY MODERN GRID === */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.gallery a {
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: 0.4s;
+}
+
+.gallery a:hover {
+    transform: scale(1.05);
+}
+
+.gallery img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="header-box">
+        <h1 id="judul">Judul Halaman</h1>
+        <h3 id="subjudul">Subjudul Halaman</h3>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+</div>
+
+<script>
+// Load Judul & Subjudul
+document.getElementById("judul").innerText =
+    localStorage.getItem("judul") || "Judul Halaman";
+
+document.getElementById("subjudul").innerText =
+    localStorage.getItem("subjudul") || "Subjudul Halaman";
+
+// Load Background
+let bg = localStorage.getItem("background");
+if(bg){
+    document.body.style.backgroundImage = `url(${bg})`;
+}
+
+// Load Gallery
+let photos = JSON.parse(localStorage.getItem("photos")) || [];
+let gallery = document.getElementById("gallery");
+
+photos.forEach(photo => {
+
+    let imageSrc;
+    let linkUrl = "#";
+
+    // Support format lama & baru
+    if(typeof photo === "string"){
+        imageSrc = photo;
+    } else {
+        imageSrc = photo.image;
+        linkUrl = photo.link || "#";
+    }
+
+    let a = document.createElement("a");
+    a.href = linkUrl;
+    a.target = "_blank";
+
+    let img = document.createElement("img");
+    img.src = imageSrc;
+
+    a.appendChild(img);
+    gallery.appendChild(a);
+});
+</script>
+
+</body>
+</html>
