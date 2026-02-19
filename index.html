@@ -84,6 +84,11 @@ body {
         <h3 id="subjudul">Subjudul Halaman</h3>
     </div>
 
+<div style="text-align:center; margin:10px;">
+  <button onclick="ubahGrid(1)">1 Baris</button>
+  <button onclick="ubahGrid(2)">2 Baris</button>
+</div>
+
     <div class="gallery" id="gallery"></div>
 </div>
 
@@ -129,6 +134,19 @@ photos.forEach(photo => {
     gallery.appendChild(a);
 });
 </script>
-
+<script>
+function ubahGrid(jumlah) {
+  var gambar = document.querySelectorAll("img");
+  
+  for (var i = 0; i < gambar.length; i++) {
+    if (jumlah == 1) {
+      gambar[i].style.width = "100%";
+    } else {
+      gambar[i].style.width = "48%";
+    }
+  }
+}
+</script>
 </body>
+
 </html>
