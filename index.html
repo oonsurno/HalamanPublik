@@ -3,7 +3,7 @@
 <head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Website Profesional - oonsurno</title>  
+<title>Website Profesional</title>  
   
 <style>  
 * {  
@@ -14,11 +14,9 @@
 }  
   
 body {  
-    background-color: #1a1a1a; /* Warna dasar jika BG belum dimuat */
     background-size: cover;  
     background-position: center;  
     background-repeat: no-repeat;  
-    background-attachment: fixed;
     min-height: 100vh;  
     color: white;  
 }  
@@ -26,7 +24,7 @@ body {
 .overlay {  
     background: rgba(0,0,0,0.65);  
     min-height: 100vh;  
-    padding: 50px 20px;  
+    padding: 50px 30px;  
     text-align: center;  
 }  
   
@@ -36,54 +34,39 @@ body {
     border-radius: 20px;  
     backdrop-filter: blur(10px);  
     margin-bottom: 60px;  
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }  
   
 .header-box h1 {  
-    font-size: clamp(28px, 5vw, 42px);  
+    font-size: 42px;  
     margin-bottom: 15px;  
 }  
   
 .header-box h3 {  
     font-weight: 300;  
     opacity: 0.9;  
-    font-size: 18px;  
+    font-size: 20px;  
 }  
   
 /* === GALLERY MODERN GRID === */  
 .gallery {  
     display: grid;  
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  
-    gap: 25px;  
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));  
+    gap: 30px;  
     max-width: 1200px;  
     margin: auto;  
 }  
   
 .gallery a {  
     display: block;  
-    background: rgba(255,255,255,0.05);
     border-radius: 18px;  
     overflow: hidden;  
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);  
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);  
     transition: 0.4s;  
-    text-decoration: none;
-    color: white;
 }  
   
 .gallery a:hover {  
-    transform: translateY(-10px);  
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    transform: scale(1.05);  
 }  
-
-.gallery img {  
-    width: 100%;  
-    height: 280px;  
-    object-fit: cover;  
-    display: block;  
-}  
-
 .card-info {  
     background: rgba(0,0,0,0.7);  
     padding: 15px;  
@@ -91,38 +74,254 @@ body {
 }  
   
 .card-info h4 {  
-    margin-bottom: 5px;  
-    font-size: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 8px;  
+    font-size: 18px;  
 }  
   
 .card-info p {  
-    font-size: 12px;  
-    opacity: 0.7;  
+    font-size: 14px;  
+    opacity: 0.85;  
 }  
-
-/* Loading Animation */
-.loading {
-    font-size: 20px;
-    opacity: 0.8;
-}
+.gallery img {  
+    width: 100%;  
+    height: 320px;  
+    object-fit: cover;  
+    display: block;  
+}  
+  
 </style>  
 </head>  
 <body>  
   
 <div class="overlay">  
     <div class="header-box">  
-        <h1 id="judul">Memuat...</h1>  
-        <h3 id="subjudul">Silakan tunggu</h3>  
+        <h1 id="judul">Judul Halaman</h1>  
+        <h3 id="subjudul">Subjudul Halaman</h3>  
     </div>  
   
-    <div class="gallery" id="gallery">
-        <p class="loading">Menghubungkan ke GitHub...</p>
-    </div>  
+    <div class="gallery" id="gallery"></div>  
 </div>  
   
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+min-height:100vh;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+}
+
+/* Overlay */
+.overlay{
+background:rgba(0,0,0,0.65);
+min-height:100vh;
+padding:30px 20px;
+color:white;
+}
+
+/* TOP BAR FIX */
+.top-bar{
+display:flex;
+flex-wrap:wrap; /* supaya tidak numpuk di HP */
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:30px;
+}
+
+.top-bar h1{
+font-size:26px;
+font-weight:600;
+}
+
+/* Container tombol */
+.top-actions{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+/* Tombol umum */
+.top-actions button{
+padding:10px 18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:500;
+transition:0.2s;
+}
+
+/* Warna tombol */
+.setting-btn{
+background:#1e88e5;
+color:white;
+}
+
+.tambah-btn{
+background:#1565c0;
+color:white;
+}
+
+/* Efek hover */
+.top-actions button:hover{
+opacity:0.85;
+transform:scale(1.03);
+}
+
+/* GALLERY */
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.1);
+border-radius:15px;
+overflow:hidden;
+backdrop-filter:blur(8px);
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+}
+
+.card-content h4{
+margin-bottom:5px;
+}
+
+.card-content p{
+font-size:13px;
+opacity:0.9;
+}
+
+.card-buttons{
+margin-top:10px;
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.card-buttons button{
+flex:1;
+padding:7px;
+font-size:12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.edit-btn{
+background:#ffc107;
+color:black;
+}
+
+.delete-btn{
+background:#dc3545;
+color:white;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.modal-content{
+background:white;
+color:black;
+width:100%;
+max-width:500px;
+padding:25px;
+border-radius:15px;
+}
+
+.modal-content input,
+.modal-content textarea{
+width:100%;
+padding:10px;
+margin:8px 0 12px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.modal-content button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+background:#1e88e5;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="overlay">
+
+<div class="top-bar">
+<h1>Admin Galeri</h1>
+
+<div class="top-actions">
+<button class="setting-btn" onclick="openSetting()">⚙ Setting</button>
+<button class="tambah-btn" onclick="openFoto()">➕ Tambah Foto</button>
+</div>
+
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+</div>
+
+<!-- ================= SETTING MODAL ================= -->
+<div class="modal" id="settingModal">
+<div class="modal-content">
+<h3>Setting Halaman</h3>
+<input type="text" id="inputJudul" placeholder="Judul">
+<input type="text" id="inputSubjudul" placeholder="Subjudul">
+<input type="file" id="uploadBackground" accept="image/*">
+<button onclick="simpanSetting()">Simpan</button>
+<button onclick="closeModal('settingModal')">Tutup</button>
+</div>
+</div>
+
+<!-- ================= FOTO MODAL ================= -->
+<div class="modal" id="fotoModal">
+<div class="modal-content">
+<h3 id="modalTitle">Tambah Foto</h3>
+<input type="file" id="uploadFoto" accept="image/*">
+<input type="text" id="judulFoto" placeholder="Judul Foto">
+<textarea id="deskripsiFoto" placeholder="Deskripsi"></textarea>
+<input type="text" id="linkFoto" placeholder="Link tujuan (https://)">
+<button onclick="simpanFoto()">Simpan Foto</button>
+<button onclick="closeModal('fotoModal')">Tutup</button>
+</div>
+</div>
+
 <script>
 // --- KONFIGURASI ---
 const username = "oonsurno";
@@ -183,4 +382,3 @@ fetchGithubImages();
   
 </body>  
 </html>
-
