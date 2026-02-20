@@ -4,7 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Profesional</title>
+<style>
+#galeri {
+  display: grid;
+  gap: 10px;
+}
 
+.satuKolom {
+  grid-template-columns: 1fr;
+}
+
+.duaKolom {
+  grid-template-columns: 1fr 1fr;
+}
+
+#galeri img {
+  width: 100%;
+  height: auto;
+}
+      </style>
 <style>
 * {
     margin: 0;
@@ -89,7 +107,7 @@ body {
   <button onclick="ubahGrid(2)">2 Baris</button>
 </div>
 
-    <div class="gallery" id="gallery"></div>
+    <div class="gallery" id="gallery"> </div>
 </div>
 
 <script>
@@ -134,19 +152,20 @@ photos.forEach(photo => {
     gallery.appendChild(a);
 });
 </script>
-<script>
 function ubahGrid(jumlah) {
-  var gambar = document.querySelectorAll("img");
-  
-  for (var i = 0; i < gambar.length; i++) {
-    if (jumlah == 1) {
-      gambar[i].style.width = "100%";
-    } else {
-      gambar[i].style.width = "48%";
-    }
+  var gallery = document.getElementById("gallery");
+  if (!gallery) return;
+
+  gallery.style.display = "grid";
+  gallery.style.gap = "10px";
+
+  if (jumlah == 1) {
+    gallery.style.gridTemplateColumns = "1fr";
+  } else {
+    gallery.style.gridTemplateColumns = "1fr 1fr";
   }
 }
-</script>
 </body>
 
 </html>
+
