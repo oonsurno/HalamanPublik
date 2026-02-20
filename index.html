@@ -124,79 +124,63 @@ body {
 </div>  
   
 <script>
-// --- KONFIGURASI GITHUB ANDA ---
+// --- KONFIGURASI ---
 const username = "oonsurno";
 const repo = "HalamanPublik"; 
 const folder = "images"; 
 
-// --- 1. LOAD JUDUL & BG ---
-// Mengambil dari localStorage jika ada, jika tidak gunakan default
+// 1. Load Judul & BG
 document.getElementById("judul").innerText = localStorage.getItem("judul") || "Galeri Foto oonsurno";
-document.getElementById("subjudul").innerText = localStorage.getItem("subjudul") || "Koleksi foto dari folder /images";
-
+document.getElementById("subjudul").innerText = localStorage.getItem("subjudul") || "Koleksi dari folder /images";
 let bg = localStorage.getItem("background");
-if(bg) {
-    document.body.style.backgroundImage = `url(${bg})`;
-} else {
-    // Background default jika localStorage kosong
-    document.body.style.backgroundImage = `url('https://images.unsplash.com')`;
-}
+if(bg) document.body.style.backgroundImage = `url(${bg})`;
 
-// --- 2. FUNGSI AMBIL DATA DARI GITHUB API ---
+// 2. Ambil Foto dari GitHub
 async function fetchGithubImages() {
     const galleryContainer = document.getElementById("gallery");
     
     try {
-        // PERBAIKAN URL API: Menambahkan /repos/ dan / antar variabel
+        // Alamat API yang sudah diperbaiki
         const apiUrl = `https://api.github.com{username}/${repo}/contents/${folder}`;
         const response = await fetch(apiUrl);
         
-        if (!response.ok) throw new Error("Folder tidak ditemukan atau Repo Private");
+        if (!response.ok) throw new Error("Folder 'images' tidak ditemukan atau Repo Private");
         
         const files = await response.json();
-        galleryContainer.innerHTML = ""; // Hapus teks loading
+        galleryContainer.innerHTML = ""; 
 
         files.forEach(file => {
             // Filter hanya file gambar
             if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                
                 let a = document.createElement("a");
-                a.href = file.html_url; // Link ke halaman file di GitHub
+                a.href = file.download_url;
                 a.target = "_blank";
 
-                // Gunakan download_url agar gambar tampil langsung
                 let img = document.createElement("img");
-                img.src = file.download_url;
-                img.alt = file.name;
+                img.src = file.download_url; // Link gambar langsung
                 img.loading = "lazy"; 
 
                 let info = document.createElement("div");
                 info.className = "card-info";
-                
-                // Ambil nama file tanpa ekstensi untuk judul kartu
-                let displayName = file.name.split('.')[0].replace(/-/g, ' ').replace(/_/g, ' ');
-                
-                info.innerHTML = `<h4>${displayName}</h4><p>Lihat di GitHub</p>`;
+                // Menampilkan nama file tanpa .jpg
+                let cleanName = file.name.split('.')[0].replace(/-/g, ' ');
+                info.innerHTML = `<h4>${cleanName}</h4><p>Lihat Gambar</p>`;
 
                 a.appendChild(img);
                 a.appendChild(info);
                 galleryContainer.appendChild(a);
             }
         });
-
-        if(galleryContainer.innerHTML === "") {
-            galleryContainer.innerHTML = "<p>Tidak ada gambar di dalam folder /images</p>";
-        }
-
     } catch (error) {
         console.error(error);
-        galleryContainer.innerHTML = `<p>Gagal memuat gambar.<br><small>${error.message}</small></p>`;
+        galleryContainer.innerHTML = `<p style="color:red">Gagal: ${error.message}</p>`;
     }
 }
 
-// Jalankan fungsi saat halaman siap
-window.onload = fetchGithubImages;
+fetchGithubImages();
 </script>
+
   
 </body>  
 </html>
+
