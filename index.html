@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Website Profesional</title>
 <style>
+
+<style>
+#gallery{
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* default 2 kolom */
+  gap: 10px;
+}
+
+#gallery img{
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.tombol-grid{
+  text-align:center;
+  margin:15px 0;
+}
+
+.tombol-grid button{
+  padding:8px 15px;
+  margin:5px;
+  border:none;
+  border-radius:20px;
+  background:#007bff;
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.tombol-grid button:hover{
+  background:#0056b3;
+}
+</style>
+  
 #galeri {
   display: grid;
   gap: 10px;
@@ -102,7 +138,7 @@ body {
         <h3 id="subjudul">Subjudul Halaman</h3>
     </div>
 
-<div style="text-align:center; margin:10px;">
+<div class="tombol-grid">
   <button onclick="ubahGrid(1)">1 Baris</button>
   <button onclick="ubahGrid(2)">2 Baris</button>
 </div>
@@ -152,20 +188,20 @@ photos.forEach(photo => {
     gallery.appendChild(a);
 });
 </script>
-function ubahGrid(jumlah) {
+<script>
+function ubahGrid(jumlah){
   var gallery = document.getElementById("gallery");
-  if (!gallery) return;
+  if(!gallery) return;
 
-  gallery.style.display = "grid";
-  gallery.style.gap = "10px";
-
-  if (jumlah == 1) {
+  if(jumlah == 1){
     gallery.style.gridTemplateColumns = "1fr";
   } else {
     gallery.style.gridTemplateColumns = "1fr 1fr";
   }
 }
+</script>
 </body>
 
 </html>
+
 
