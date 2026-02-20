@@ -1,61 +1,202 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Halaman Publik</title>
-<style>
-body{margin:0;font-family:'Segoe UI',sans-serif;color:white;background:#111;}
-.overlay{background:rgba(0,0,0,0.65);min-height:100vh;padding:50px;text-align:center;}
-.header-box{background:rgba(255,255,255,0.1);padding:40px;border-radius:20px;backdrop-filter:blur(10px);margin-bottom:60px;}
-.header-box h1{font-size:42px;margin-bottom:15px;}
-.header-box h3{font-weight:300;opacity:0.9;font-size:20px;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;max-width:1200px;margin:auto;}
-.gallery a{display:block;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6);transition:0.4s;}
-.gallery a:hover{transform:scale(1.05);}
-.gallery img{width:100%;height:320px;object-fit:cover;display:block;}
-.card-info{background:rgba(0,0,0,0.7);padding:15px;text-align:left;}
-.card-info h4{margin-bottom:8px;font-size:18px;}
-.card-info p{font-size:14px;opacity:0.85;}
-</style>
-</head>
-<body>
-<div class="overlay">
-  <div class="header-box">
-    <h1 id="judul">Judul Halaman</h1>
-    <h3 id="subjudul">Subjudul Halaman</h3>
-  </div>
-  <div class="gallery" id="gallery"></div>
-</div>
+<!DOCTYPE html>  
+<html lang="id">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Website Profesional - oonsurno</title>  
+  
+<style>  
+* {  
+    margin: 0;  
+    padding: 0;  
+    box-sizing: border-box;  
+    font-family: 'Segoe UI', sans-serif;  
+}  
+  
+body {  
+    background-color: #1a1a1a; /* Warna dasar jika BG belum dimuat */
+    background-size: cover;  
+    background-position: center;  
+    background-repeat: no-repeat;  
+    background-attachment: fixed;
+    min-height: 100vh;  
+    color: white;  
+}  
+  
+.overlay {  
+    background: rgba(0,0,0,0.65);  
+    min-height: 100vh;  
+    padding: 50px 20px;  
+    text-align: center;  
+}  
+  
+.header-box {  
+    background: rgba(255,255,255,0.1);  
+    padding: 40px;  
+    border-radius: 20px;  
+    backdrop-filter: blur(10px);  
+    margin-bottom: 60px;  
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}  
+  
+.header-box h1 {  
+    font-size: clamp(28px, 5vw, 42px);  
+    margin-bottom: 15px;  
+}  
+  
+.header-box h3 {  
+    font-weight: 300;  
+    opacity: 0.9;  
+    font-size: 18px;  
+}  
+  
+/* === GALLERY MODERN GRID === */  
+.gallery {  
+    display: grid;  
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  
+    gap: 25px;  
+    max-width: 1200px;  
+    margin: auto;  
+}  
+  
+.gallery a {  
+    display: block;  
+    background: rgba(255,255,255,0.05);
+    border-radius: 18px;  
+    overflow: hidden;  
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);  
+    transition: 0.4s;  
+    text-decoration: none;
+    color: white;
+}  
+  
+.gallery a:hover {  
+    transform: translateY(-10px);  
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+}  
 
+.gallery img {  
+    width: 100%;  
+    height: 280px;  
+    object-fit: cover;  
+    display: block;  
+}  
+
+.card-info {  
+    background: rgba(0,0,0,0.7);  
+    padding: 15px;  
+    text-align: left;  
+}  
+  
+.card-info h4 {  
+    margin-bottom: 5px;  
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}  
+  
+.card-info p {  
+    font-size: 12px;  
+    opacity: 0.7;  
+}  
+
+/* Loading Animation */
+.loading {
+    font-size: 20px;
+    opacity: 0.8;
+}
+</style>  
+</head>  
+<body>  
+  
+<div class="overlay">  
+    <div class="header-box">  
+        <h1 id="judul">Memuat...</h1>  
+        <h3 id="subjudul">Silakan tunggu</h3>  
+    </div>  
+  
+    <div class="gallery" id="gallery">
+        <p class="loading">Menghubungkan ke GitHub...</p>
+    </div>  
+</div>  
+  
 <script>
-// Ambil data dari data.json di GitHub
-fetch("https://raw.githubusercontent.com/oonsurno/HalamanPublik/main/data.json")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("judul").innerText = data.judulHalaman;
-    document.getElementById("subjudul").innerText = data.subjudulHalaman;
-    if(data.background) document.body.style.backgroundImage = `url(${data.background})`;
+// --- KONFIGURASI GITHUB ANDA ---
+const username = "oonsurno";
+const repo = "HalamanPublik"; 
+const folder = "images"; 
 
-    const gallery = document.getElementById("gallery");
-    data.photos.forEach(photo => {
-      let a = document.createElement("a");
-      a.href = photo.link || "#";
-      a.target = "_blank";
+// --- 1. LOAD JUDUL & BG ---
+// Mengambil dari localStorage jika ada, jika tidak gunakan default
+document.getElementById("judul").innerText = localStorage.getItem("judul") || "Galeri Foto oonsurno";
+document.getElementById("subjudul").innerText = localStorage.getItem("subjudul") || "Koleksi foto dari folder /images";
 
-      let img = document.createElement("img");
-      img.src = photo.image;
+let bg = localStorage.getItem("background");
+if(bg) {
+    document.body.style.backgroundImage = `url(${bg})`;
+} else {
+    // Background default jika localStorage kosong
+    document.body.style.backgroundImage = `url('https://images.unsplash.com')`;
+}
 
-      let info = document.createElement("div");
-      info.className = "card-info";
-      info.innerHTML = `<h4>${photo.title}</h4><p>${photo.desc}</p>`;
+// --- 2. FUNGSI AMBIL DATA DARI GITHUB API ---
+async function fetchGithubImages() {
+    const galleryContainer = document.getElementById("gallery");
+    
+    try {
+        // PERBAIKAN URL API: Menambahkan /repos/ dan / antar variabel
+        const apiUrl = `https://api.github.com{username}/${repo}/contents/${folder}`;
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) throw new Error("Folder tidak ditemukan atau Repo Private");
+        
+        const files = await response.json();
+        galleryContainer.innerHTML = ""; // Hapus teks loading
 
-      a.appendChild(img);
-      a.appendChild(info);
-      gallery.appendChild(a);
-    });
-  })
-  .catch(err => console.error("Gagal load data:", err));
+        files.forEach(file => {
+            // Filter hanya file gambar
+            if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                
+                let a = document.createElement("a");
+                a.href = file.html_url; // Link ke halaman file di GitHub
+                a.target = "_blank";
+
+                // Gunakan download_url agar gambar tampil langsung
+                let img = document.createElement("img");
+                img.src = file.download_url;
+                img.alt = file.name;
+                img.loading = "lazy"; 
+
+                let info = document.createElement("div");
+                info.className = "card-info";
+                
+                // Ambil nama file tanpa ekstensi untuk judul kartu
+                let displayName = file.name.split('.')[0].replace(/-/g, ' ').replace(/_/g, ' ');
+                
+                info.innerHTML = `<h4>${displayName}</h4><p>Lihat di GitHub</p>`;
+
+                a.appendChild(img);
+                a.appendChild(info);
+                galleryContainer.appendChild(a);
+            }
+        });
+
+        if(galleryContainer.innerHTML === "") {
+            galleryContainer.innerHTML = "<p>Tidak ada gambar di dalam folder /images</p>";
+        }
+
+    } catch (error) {
+        console.error(error);
+        galleryContainer.innerHTML = `<p>Gagal memuat gambar.<br><small>${error.message}</small></p>`;
+    }
+}
+
+// Jalankan fungsi saat halaman siap
+window.onload = fetchGithubImages;
 </script>
-</body>
+  
+</body>  
 </html>
