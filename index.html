@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galeri Publik oonsurno</title>
-<style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: #121212; min-height: 100vh; color: white; background-size: cover; background-position: center; background-attachment: fixed; }
-    .overlay { background: rgba(0,0,0,0.7); min-height: 100vh; padding: 40px 20px; text-align: center; }
-    .header-box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 40px; max-width: 700px; margin: 0 auto 40px auto; border: 1px solid rgba(255,255,255,0.2); }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
-    .card { background: #1e1e1e; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: 0.3s; text-decoration: none; color: white; display: block; }
-    .card:hover { transform: translateY(-5px); }
-    .card img { width: 100%; height: 250px; object-fit: cover; }
-    .card-info { padding: 12px; text-align: left; }
-    .card-info h4 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri oonsurno</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #121212; color: white; min-height: 100vh; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; background: #222; padding: 20px; border-radius: 15px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        .card { background: #1e1e1e; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-decoration: none; color: white; }
+        .card img { width: 100%; height: 200px; object-fit: cover; background: #333; }
+        .card-info { padding: 10px; font-size: 14px; text-align: center; }
+    </style>
 </head>
 <body>
 
-<div class="overlay">
-    <div class="header-box">
-        <h1 id="judul">Galeri Foto</h1>
-        <h3 id="subjudul">Koleksi Terbaru</h3>
-    </div>
-    <div class="gallery" id="gallery">Memuat foto...</div>
+<div class="header">
+    <h1 id="judul">Galeri Foto oonsurno</h1>
+    <p id="subjudul">Memuat koleksi dari GitHub...</p>
 </div>
 
+<div class="gallery" id="gallery">Sedang memuat foto...</div>
+
 <script>
-// --- KONFIGURASI GITHUB ANDA ---
+// --- DATA REPOSI ---
 const username = "oonsurno";
-const repo = "HalamanPublik"; // Sesuai nama repo di gambar Anda
+const repo = "HalamanPublik";
 
-// 1. Ambil Setting dari LocalStorage
-document.getElementById("judul").innerText = localStorage.getItem("judul") || "Galeri oonsurno";
-document.getElementById("subjudul").innerText = localStorage.getItem("subjudul") || "Update dari Repositori GitHub";
-let bg = localStorage.getItem("background");
-if(bg) document.body.style.backgroundImage = `url(${bg})`;
+// Load Title (Opsional)
+document.getElementById("judul").innerText = localStorage.getItem("judul") || "Galeri Foto oonsurno";
+document.getElementById("subjudul").innerText = localStorage.getItem("subjudul") || "Koleksi foto langsung dari GitHub";
 
-// 2. Fungsi Ambil Foto Tanpa Folder
-async function fetchImages() {
-    const container = document.getElementById("gallery");
+async function loadPhotos() {
+    const gallery = document.getElementById("gallery");
     try {
-        // Mengambil isi root repositori
-        const res = await fetch(`https://api.github.com{username}/${repo}/contents/`);
-        const data = await res.json();
-        
-        container.innerHTML = ""; // Bersihkan teks loading
+        // PERHATIKAN: URL API ini harus ditulis lengkap seperti ini
+        const response = await fetch(`https://api.github.com{username}/${repo}/contents/`);
+        const files = await response.json();
 
-        data.forEach(file => {
-            // Hanya ambil file yang berakhiran gambar (jpg, png, webp)
+        if (!Array.isArray(files)) throw new Error("Gagal mengambil daftar file.");
+
+        gallery.innerHTML = ""; // Hapus teks loading
+
+        files.forEach(file => {
+            // Filter: Hanya ambil file gambar (.jpg, .png, .webp)
             if (file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
                 const card = document.createElement("a");
                 card.className = "card";
                 card.href = file.download_url;
                 card.target = "_blank";
 
-                // Rapikan nama file untuk judul (hapus FB_IMG_ dan .jpg)
-                let cleanName = file.name.replace("FB_IMG_", "").split('.')[0];
+                // Menampilkan nama file sebagai judul kecil
+                let cleanName = file.name.split('.')[0].replace(/[-_]/g, ' ');
 
                 card.innerHTML = `
-                    <img src="${file.download_url}" loading="lazy">
+                    <img src="${file.download_url}" alt="${file.name}">
                     <div class="card-info">
-                        <h4>Foto ID: ${cleanName}</h4>
+                        <strong>${cleanName}</strong>
                     </div>
                 `;
-                container.appendChild(card);
+                gallery.appendChild(card);
             }
         });
 
-        if(container.innerHTML === "") container.innerHTML = "Tidak ada foto ditemukan.";
+        if (gallery.innerHTML === "") {
+            gallery.innerHTML = "<p>Tidak ada file gambar ditemukan.</p>";
+        }
 
     } catch (err) {
-        container.innerHTML = "Gagal memuat foto. Pastikan Repo Publik.";
+        console.error(err);
+        gallery.innerHTML = `<p style="color:red">Gagal memuat: ${err.message}</p>`;
     }
 }
 
-fetchImages();
+// Jalankan fungsi
+loadPhotos();
 </script>
+
 </body>
 </html>
